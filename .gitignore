@@ -46,6 +46,9 @@ yarn-error.log*
 Thumbs.db
 
 # Local pharmacy data (runtime-generated)
+src/PharmacyApi/Data/*.json
+src/PharmacyApi/Data/*.tmp
+# Legacy path (pre src/ layout)
 PharmacyApi/Data/*.json
 PharmacyApi/Data/*.tmp
 

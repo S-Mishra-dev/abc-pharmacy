@@ -75,7 +75,7 @@ public sealed class GlobalExceptionHandlerTests
         problemDetailsService
             .Setup(s => s.WriteAsync(It.IsAny<ProblemDetailsContext>()))
             .Callback(onWrite)
-            .ReturnsAsync(true);
+            .Returns(ValueTask.CompletedTask);
 
         return new GlobalExceptionHandler(
             Mock.Of<ILogger<GlobalExceptionHandler>>(),
