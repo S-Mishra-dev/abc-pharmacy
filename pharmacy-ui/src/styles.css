@@ -1,0 +1,26 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+  color: #1f2a24;
+  background:
+    radial-gradient(circle at top left, rgb(47 122 90 / 18%), transparent 40%),
+    linear-gradient(160deg, #eef5f0 0%, #f7faf8 45%, #e8efe9 100%);
+}
+
+app-root {
+  display: block;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2.5rem;
+}
