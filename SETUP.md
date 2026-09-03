@@ -1,4 +1,4 @@
-# Setup guide â€” ABC Pharmacy
+# Setup guide — ABC Pharmacy
 
 Local setup for the .NET 10 Web API and Angular 22 UI. For product overview and API docs, see [README.md](./README.md).
 
@@ -25,23 +25,23 @@ From the repository root:
 dotnet restore abc-pharmacy.slnx
 dotnet build abc-pharmacy.slnx -c Debug
 
-cd pharmacy-ui
+cd src/pharmacy-ui
 npm install
 ```
 
 Without the solution file, restore/build the projects individually:
 
 ```bash
-dotnet restore PharmacyApi/PharmacyApi.csproj
-dotnet build PharmacyApi/PharmacyApi.csproj -c Debug
-dotnet restore PharmacyApi.Tests/PharmacyApi.Tests.csproj
-dotnet build PharmacyApi.Tests/PharmacyApi.Tests.csproj -c Debug
+dotnet restore src/PharmacyApi/PharmacyApi.csproj
+dotnet build src/PharmacyApi/PharmacyApi.csproj -c Debug
+dotnet restore tests/PharmacyApi.Tests/PharmacyApi.Tests.csproj
+dotnet build tests/PharmacyApi.Tests/PharmacyApi.Tests.csproj -c Debug
 ```
 
 ## Run the API
 
 ```bash
-cd PharmacyApi
+cd src/PharmacyApi
 dotnet run --launch-profile http
 ```
 
@@ -50,20 +50,29 @@ dotnet run --launch-profile http
 | `http` (recommended for local UI) | `http://localhost:5198` |
 | `https` | `https://localhost:7228` and `http://localhost:5198` |
 
-Launch profiles are defined in `PharmacyApi/Properties/launchSettings.json`. On first start, if `PharmacyApi/Data/medicines.json` and `sales.json` are missing, the API seeds sample medicines.
+Launch profiles are defined in `src/PharmacyApi/Properties/launchSettings.json`. On first start, if `src/PharmacyApi/Data/medicines.json` and `sales.json` are missing, the API seeds sample medicines.
+
+**API docs (Development only):** Launch profiles set `ASPNETCORE_ENVIRONMENT=Development`, which enables:
+
+| Resource | URL |
+| --- | --- |
+| Scalar UI | `http://localhost:5198/scalar` (HTTPS: `https://localhost:7228/scalar`) |
+| OpenAPI JSON | `http://localhost:5198/openapi/v1.json` |
+
+These are not available when the API runs in Production.
 
 ## Run the UI
 
 Start the API first, then in a second terminal:
 
 ```bash
-cd pharmacy-ui
+cd src/pharmacy-ui
 npm start
 ```
 
 - App: `http://localhost:4200`
 - `environment.apiBaseUrl` is `/api`
-- Dev proxy (`proxy.conf.json`, wired via `angular.json`) forwards `/api` â†’ `http://localhost:5198`
+- Dev proxy (`proxy.conf.json`, wired via `angular.json`) forwards `/api` → `http://localhost:5198`
 
 CORS on the API allows `http://localhost:4200` and `https://localhost:4200` (policy `AngularDev`).
 
@@ -71,7 +80,7 @@ CORS on the API allows `http://localhost:4200` and `https://localhost:4200` (pol
 
 ```bash
 # From repo root
-dotnet test PharmacyApi.Tests/PharmacyApi.Tests.csproj
+dotnet test tests/PharmacyApi.Tests/PharmacyApi.Tests.csproj
 ```
 
 Or via the solution:
@@ -85,7 +94,7 @@ Controller unit tests mock `IMedicineRepository` (no disk I/O).
 Optional UI build check:
 
 ```bash
-cd pharmacy-ui
+cd src/pharmacy-ui
 npm run build
 ```
 
@@ -103,5 +112,5 @@ Confirm the API is listening on `http://localhost:5198` with the `http` launch p
 **Port already in use**  
 Stop whatever is bound to `5198` (API) or `4200` (UI), or change the launch profile / `ng serve` port intentionally and update the proxy/CORS to match.
 
-**`npm install` fails in `pharmacy-ui`**  
-Use Node 22+ and a recent npm (project notes `npm@11`). Delete `node_modules` and retry `npm install` from `pharmacy-ui/`.
+**`npm install` fails in `src/pharmacy-ui`**  
+Use Node 22+ and a recent npm (project notes `npm@11`). Delete `node_modules` and retry `npm install` from `src/pharmacy-ui/`.

@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using PharmacyApi.Infrastructure;
 using PharmacyApi.Services;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+builder.Services.AddOpenApi();
 builder.Services.AddSingleton<IMedicineRepository, JsonMedicineRepository>();
 
 var app = builder.Build();
@@ -38,6 +40,12 @@ using (var scope = app.Services.CreateScope())
 {
     var repository = scope.ServiceProvider.GetRequiredService<IMedicineRepository>();
     await repository.EnsureSeedDataAsync();
+}
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseExceptionHandler();

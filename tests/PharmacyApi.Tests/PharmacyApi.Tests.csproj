@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PharmacyApi\PharmacyApi.csproj" />
+    <ProjectReference Include="..\..\src\PharmacyApi\PharmacyApi.csproj" />
   </ItemGroup>
 
 </Project>

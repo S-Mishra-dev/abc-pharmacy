@@ -8,11 +8,11 @@ Pharmacy Medicine Management SPA: track inventory, add medicines, and sell stock
 
 | Layer | Stack | Location |
 | --- | --- | --- |
-| API | .NET 10 Web API (C# 12) | `PharmacyApi/` |
-| UI | Angular 22 standalone SPA (zoneless, signals) | `pharmacy-ui/` |
-| Tests | xUnit + Moq | `PharmacyApi.Tests/` |
+| API | .NET 10 Web API (C# 12) | `src/PharmacyApi/` |
+| UI | Angular 22 standalone SPA (zoneless, signals) | `src/pharmacy-ui/` |
+| Tests | xUnit + Moq | `tests/PharmacyApi.Tests/` |
 
-**Storage:** Persistent JSON under `PharmacyApi/Data/` (`medicines.json`, `sales.json`) via `JsonMedicineRepository`, guarded by `SemaphoreSlim` for thread-safe async I/O. Sample medicines are seeded on first API start if the files are missing.
+**Storage:** Persistent JSON under `src/PharmacyApi/Data/` (`medicines.json`, `sales.json`) via `JsonMedicineRepository`, guarded by `SemaphoreSlim` for thread-safe async I/O. Sample medicines are seeded on first API start if the files are missing.
 
 **Error handling:** Unhandled exceptions map to RFC 7807 `ProblemDetails` through `GlobalExceptionHandler` (`IExceptionHandler`). Request DTOs use DataAnnotations (`ValidationProblem` on failure). Insufficient stock returns `409 Conflict`.
 
@@ -28,12 +28,12 @@ Pharmacy Medicine Management SPA: track inventory, add medicines, and sell stock
 
 Prerequisites: [.NET 10 SDK](https://dotnet.microsoft.com/download), [Node.js](https://nodejs.org/) 22+ (LTS) and npm.
 
-From the repo root (Windows or any OS Ã¢â‚¬â€ manual):
+From the repo root (Windows or any OS — manual):
 
 ```bash
 dotnet restore abc-pharmacy.slnx
 dotnet build abc-pharmacy.slnx -c Debug
-cd pharmacy-ui && npm install
+cd src/pharmacy-ui && npm install
 ```
 
 Full details: [SETUP.md](./SETUP.md).
@@ -42,38 +42,50 @@ Full details: [SETUP.md](./SETUP.md).
 
 ```
 abc-pharmacy/
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ PharmacyApi/                 # Web API
-Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Controllers/             # MedicinesController
-Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Data/                    # medicines.json, sales.json (runtime)
-Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Infrastructure/          # GlobalExceptionHandler
-Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Models/                  # Medicine, requests, SaleRecord
-Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ Services/                # IMedicineRepository, JsonMedicineRepository
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ PharmacyApi.Tests/           # Controller + exception-handler unit tests
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ pharmacy-ui/                 # Angular SPA
-Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ proxy.conf.json          # Dev proxy /api Ã¢â€ â€™ API
-Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ src/app/
-Ã¢â€â€š       Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ components/medicine-dashboard/
-Ã¢â€â€š       Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ models/
-Ã¢â€â€š       Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ services/
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ abc-pharmacy.slnx
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ SETUP.md
+├── src/
+│   ├── PharmacyApi/                 # Web API
+│   │   ├── Controllers/             # MedicinesController
+│   │   ├── Data/                    # medicines.json, sales.json (runtime)
+│   │   ├── Infrastructure/          # GlobalExceptionHandler
+│   │   ├── Models/                  # Medicine, requests, SaleRecord
+│   │   └── Services/                # IMedicineRepository, JsonMedicineRepository
+│   └── pharmacy-ui/                 # Angular SPA
+│       ├── proxy.conf.json          # Dev proxy /api → API
+│       └── src/app/
+│           ├── components/medicine-dashboard/
+│           ├── models/
+│           └── services/
+├── tests/
+│   └── PharmacyApi.Tests/           # Controller + exception-handler unit tests
+├── abc-pharmacy.slnx
+├── README.md
+└── SETUP.md
 ```
 
 ## Run the API
 
 ```bash
-cd PharmacyApi
+cd src/PharmacyApi
 dotnet run --launch-profile http
 ```
 
 Listens on `http://localhost:5198` (see `Properties/launchSettings.json`). HTTPS profile also available (`https://localhost:7228`).
+
+**API docs (Development only):** With `ASPNETCORE_ENVIRONMENT=Development` (default for launch profiles), interactive docs and the OpenAPI document are available:
+
+| Resource | URL |
+| --- | --- |
+| Scalar UI | `http://localhost:5198/scalar` (HTTPS: `https://localhost:7228/scalar`) |
+| OpenAPI JSON | `http://localhost:5198/openapi/v1.json` |
+
+These endpoints are not mapped in Production.
 
 ## Run the UI
 
 In a second terminal (API should already be running):
 
 ```bash
-cd pharmacy-ui
+cd src/pharmacy-ui
 npm start
 ```
 
@@ -82,7 +94,7 @@ Open `http://localhost:4200`. The Angular dev server proxies `/api` to `http://l
 ## Run tests
 
 ```bash
-dotnet test PharmacyApi.Tests/PharmacyApi.Tests.csproj
+dotnet test tests/PharmacyApi.Tests/PharmacyApi.Tests.csproj
 ```
 
 Or from the solution:
@@ -91,7 +103,7 @@ Or from the solution:
 dotnet test abc-pharmacy.slnx
 ```
 
-Tests mock `IMedicineRepository` Ã¢â‚¬â€ no disk I/O during unit tests.
+Tests mock `IMedicineRepository` — no disk I/O during unit tests.
 
 ## API endpoints
 
@@ -99,19 +111,20 @@ Tests mock `IMedicineRepository` Ã¢â‚¬â€ no disk I/O during unit test
 | --- | --- | --- | --- |
 | `GET` | `/api/medicines` | `200` | List all medicines |
 | `GET` | `/api/medicines/{id}` | `200` / `404` | Single medicine |
-| `POST` | `/api/medicines` | `201` | Create; validates price Ã¢â€°Â¤ 2 decimal places |
+| `POST` | `/api/medicines` | `201` | Create; validates price ≤ 2 decimal places |
 | `POST` | `/api/medicines/{id}/sell` | `200` | Body: `{ "quantity": n }`; `409` if insufficient stock |
 
 ## Configuration notes
 
 - **CORS:** API policy `AngularDev` allows `http://localhost:4200` and `https://localhost:4200`.
 - **Proxy:** UI `environment.apiBaseUrl` is `/api`; `angular.json` serve uses `proxy.conf.json`.
+- **OpenAPI / Scalar:** Mapped only when `ASPNETCORE_ENVIRONMENT=Development` (`/openapi/v1.json`, `/scalar`). Not enabled in Production.
 - **Zoneless Angular:** Angular 22 apps are zoneless by default (no `zone.js`); see comment in `app.config.ts`.
 - **JSON naming:** API uses camelCase JSON; decimals serialize to 2 decimal places.
 
 ## Development notes (contributors)
 
-- Keep JSON persistence on disk with `SemaphoreSlim` Ã¢â‚¬â€ do not replace with unsynced in-memory-only storage.
+- Keep JSON persistence on disk with `SemaphoreSlim` — do not replace with unsynced in-memory-only storage.
 - Prefer Angular signals / signal forms and native `@if` / `@for`; no legacy template-driven forms.
 - UI alert colors: expiry `#f8d7da`, low stock `#fff3cd`, combined `#f7c697`.
 - API unit tests should mock `IMedicineRepository` and cover status codes for list/create/sell edge cases.
@@ -121,7 +134,6 @@ Tests mock `IMedicineRepository` Ã¢â‚¬â€ no disk I/O during unit test
 
 ```bash
 dotnet build abc-pharmacy.slnx
-cd pharmacy-ui
+cd src/pharmacy-ui
 npm run build
 ```
-
