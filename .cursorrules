@@ -1,0 +1,9 @@
+# Pharmacy SPA (.NET 10 + Angular 22) Guidelines
+
+## Architecture & Code Rules
+- Backend: .NET 10 Web API, C# 12 features (primary constructors, record types).
+- Storage: Persistent JSON files (`medicines.json`, `sales.json`) using thread-safe `SemaphoreSlim` async locks. NEVER use in-memory arrays without disk sync.
+- Frontend: Angular 22 Standalone Components, Zoneless Change Detection, Signals (`signal`, `computed`), and Native Control Flow (`@for`, `@if`).
+- Form State: Use Angular Signal Forms / Modern Reactive Forms. Do NOT use legacy template-driven forms.
+- Coding Style: Strict typing, explicit return types, no `any`, and zero warnings on build.
+- UI Indicators: Expiry < 30 days (`#f8d7da`), Quantity < 10 (`#fff3cd`), Combined edge-case (`#f7c697`).
