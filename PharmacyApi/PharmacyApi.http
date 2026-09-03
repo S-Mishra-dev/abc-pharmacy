@@ -1,0 +1,27 @@
+@PharmacyApi_HostAddress = http://localhost:5198
+
+GET {{PharmacyApi_HostAddress}}/api/medicines
+Accept: application/json
+
+###
+
+POST {{PharmacyApi_HostAddress}}/api/medicines
+Content-Type: application/json
+
+{
+  "fullName": "Vitamin D3 1000IU",
+  "notes": "Dietary supplement",
+  "expiryDate": "2027-06-01",
+  "quantity": 40,
+  "price": 199.99,
+  "brand": "Nature Made"
+}
+
+###
+
+POST {{PharmacyApi_HostAddress}}/api/medicines/11111111-1111-1111-1111-111111111111/sell
+Content-Type: application/json
+
+{
+  "quantity": 1
+}
