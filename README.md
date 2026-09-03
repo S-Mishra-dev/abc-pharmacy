@@ -28,7 +28,7 @@ Pharmacy Medicine Management SPA: track inventory, add medicines, and sell stock
 
 Prerequisites: [.NET 10 SDK](https://dotnet.microsoft.com/download), [Node.js](https://nodejs.org/) 22+ (LTS) and npm.
 
-From the repo root (Windows or any OS â€” manual):
+From the repo root (Windows or any OS Ã¢â‚¬â€ manual):
 
 ```bash
 dotnet restore abc-pharmacy.slnx
@@ -36,28 +36,27 @@ dotnet build abc-pharmacy.slnx -c Debug
 cd pharmacy-ui && npm install
 ```
 
-On macOS/Linux (or Git Bash), you can use `./setup.sh` instead. Full details: [SETUP.md](./SETUP.md).
+Full details: [SETUP.md](./SETUP.md).
 
 ## Project structure
 
 ```
 abc-pharmacy/
-â”œâ”€â”€ PharmacyApi/                 # Web API
-â”‚   â”œâ”€â”€ Controllers/             # MedicinesController
-â”‚   â”œâ”€â”€ Data/                    # medicines.json, sales.json (runtime)
-â”‚   â”œâ”€â”€ Infrastructure/          # GlobalExceptionHandler
-â”‚   â”œâ”€â”€ Models/                  # Medicine, requests, SaleRecord
-â”‚   â””â”€â”€ Services/                # IMedicineRepository, JsonMedicineRepository
-â”œâ”€â”€ PharmacyApi.Tests/           # Controller + exception-handler unit tests
-â”œâ”€â”€ pharmacy-ui/                 # Angular SPA
-â”‚   â”œâ”€â”€ proxy.conf.json          # Dev proxy /api â†’ API
-â”‚   â””â”€â”€ src/app/
-â”‚       â”œâ”€â”€ components/medicine-dashboard/
-â”‚       â”œâ”€â”€ models/
-â”‚       â””â”€â”€ services/
-â”œâ”€â”€ abc-pharmacy.slnx
-â”œâ”€â”€ SETUP.md
-â””â”€â”€ setup.sh                     # Optional automated setup (Unix / Git Bash)
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ PharmacyApi/                 # Web API
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Controllers/             # MedicinesController
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Data/                    # medicines.json, sales.json (runtime)
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Infrastructure/          # GlobalExceptionHandler
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Models/                  # Medicine, requests, SaleRecord
+Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ Services/                # IMedicineRepository, JsonMedicineRepository
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ PharmacyApi.Tests/           # Controller + exception-handler unit tests
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ pharmacy-ui/                 # Angular SPA
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ proxy.conf.json          # Dev proxy /api Ã¢â€ â€™ API
+Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ src/app/
+Ã¢â€â€š       Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ components/medicine-dashboard/
+Ã¢â€â€š       Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ models/
+Ã¢â€â€š       Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ services/
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ abc-pharmacy.slnx
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ SETUP.md
 ```
 
 ## Run the API
@@ -92,7 +91,7 @@ Or from the solution:
 dotnet test abc-pharmacy.slnx
 ```
 
-Tests mock `IMedicineRepository` â€” no disk I/O during unit tests.
+Tests mock `IMedicineRepository` Ã¢â‚¬â€ no disk I/O during unit tests.
 
 ## API endpoints
 
@@ -100,7 +99,7 @@ Tests mock `IMedicineRepository` â€” no disk I/O during unit tests.
 | --- | --- | --- | --- |
 | `GET` | `/api/medicines` | `200` | List all medicines |
 | `GET` | `/api/medicines/{id}` | `200` / `404` | Single medicine |
-| `POST` | `/api/medicines` | `201` | Create; validates price â‰¤ 2 decimal places |
+| `POST` | `/api/medicines` | `201` | Create; validates price Ã¢â€°Â¤ 2 decimal places |
 | `POST` | `/api/medicines/{id}/sell` | `200` | Body: `{ "quantity": n }`; `409` if insufficient stock |
 
 ## Configuration notes
@@ -112,7 +111,7 @@ Tests mock `IMedicineRepository` â€” no disk I/O during unit tests.
 
 ## Development notes (contributors)
 
-- Keep JSON persistence on disk with `SemaphoreSlim` â€” do not replace with unsynced in-memory-only storage.
+- Keep JSON persistence on disk with `SemaphoreSlim` Ã¢â‚¬â€ do not replace with unsynced in-memory-only storage.
 - Prefer Angular signals / signal forms and native `@if` / `@for`; no legacy template-driven forms.
 - UI alert colors: expiry `#f8d7da`, low stock `#fff3cd`, combined `#f7c697`.
 - API unit tests should mock `IMedicineRepository` and cover status codes for list/create/sell edge cases.
@@ -125,3 +124,4 @@ dotnet build abc-pharmacy.slnx
 cd pharmacy-ui
 npm run build
 ```
+
